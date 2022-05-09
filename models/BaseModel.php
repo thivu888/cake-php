@@ -77,7 +77,7 @@ class BaseModel extends Database
         }
     }
 
-    private function _query($sql)
+    protected function _query($sql)
     {
         $result = $this->connect->query($sql);
         $data = [];
@@ -91,7 +91,7 @@ class BaseModel extends Database
         ];
     }
 
-    private function _mutation($sql)
+    protected function _mutation($sql)
     {
         if ($this->connect->query($sql) === TRUE) {
             return true;

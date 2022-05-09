@@ -24,7 +24,7 @@
     <div class="main_menu_area">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="index.php">
                     <img src="public/img/logo.png" alt="">
                     <img src="public/img/logo-2.png" alt="">
                 </a>
@@ -42,11 +42,17 @@
                         </li>
                         <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sản phẩm</a>
+                            <?php if( isset($categories)){?>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Bánh mì</a></li>
-                                <li><a href="#">Bánh ngọt</a></li>
-                                <li><a href="#">Bánh sinh nhật</a></li>
+                                <?php
+                                if (!$categories['data']) return;
+                                $listCategories = $categories['data'];
+                                foreach ($listCategories as &$category) {
+                                ?>
+                                    <li><a href="#"><?= $category['name'] ?></a></li>
+                                <?php } ?>
                             </ul>
+                            <?php }?>
                         </li>
                         <li class="dropdown submenu">
                             <a href="#">Khác</a>
@@ -57,13 +63,23 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav justify-content-end">
-                        <li class="dropdown submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Đăng nhập</a>
-                        </li>
-                        <li class="dropdown submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Đăng kí</a>
-                        </li>
+                        <?php if (isset($_SESSION['user'])) { ?>
+                            <li class="dropdown submenu">
+                                <a href="#"><?= $_SESSION['user']['username'] ?></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Xem đơn hàng</a></li>
+                                    <li><a href="?controller=user&action=logout">Đăng xuất</a></li>
+                                </ul>
+                            </li>
+                        <?php } else { ?>
+                            <li class="dropdown submenu">
+                                <a class="cursor-pointer" data-toggle="modal" data-target="#myModal-login">Đăng nhập</a>
+                            </li>
+                            <li class="dropdown submenu">
+                                <a class="cursor-pointer" data-toggle="modal" data-target="#myModal-register">Đăng kí</a>
+                            </li>
                     </ul>
+                <?php } ?>
                 </div>
             </nav>
         </div>
