@@ -1,0 +1,20 @@
+.shop_cart {
+    position: relative;
+}
+
+.shop_cart .number_cart {
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 50%;
+    background: #fff;
+    color: #242424;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 18px;
+    right: -8px;
+    top: 5px;
+}
