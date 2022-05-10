@@ -42,27 +42,27 @@
                         </li>
                         <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sản phẩm</a>
-                            <?php if( isset($categories)){?>
-                            <ul class="dropdown-menu">
-                                <?php
-                                if (!$categories['data']) return;
-                                $listCategories = $categories['data'];
-                                foreach ($listCategories as &$category) {
-                                ?>
-                                    <li><a href="#"><?= $category['name'] ?></a></li>
-                                <?php } ?>
-                            </ul>
-                            <?php }?>
+                            <?php if (isset($categories)) { ?>
+                                <ul class="dropdown-menu">
+                                    <?php
+                                    if (!$categories['data']) return;
+                                    $listCategories = $categories['data'];
+                                    foreach ($listCategories as &$category) {
+                                    ?>
+                                        <li><a href="?controller=product&action=category&id=<?=$category['id']?>"><?= $category['name'] ?></a></li>
+                                    <?php } ?>
+                                </ul>
+                            <?php } ?>
                         </li>
                         <li class="dropdown submenu">
                             <a href="#">Khác</a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Dụng cụ làm bánh</a></li>
-                                <li><a href="#">Nguyên liệu làm bánh</a></li>
+                                <li><a href="./commingsoon.php">Dụng cụ làm bánh</a></li>
+                                <li><a href="./commingsoon.php">Nguyên liệu làm bánh</a></li>
                             </ul>
                         </li>
                     </ul>
-                    <ul class="navbar-nav justify-content-end">
+                    <ul class=" navbar-nav justify-content-end">
                         <?php if (isset($_SESSION['user'])) { ?>
                             <li class="dropdown submenu">
                                 <a href="#"><?= $_SESSION['user']['username'] ?></a>

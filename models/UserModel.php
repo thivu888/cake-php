@@ -51,6 +51,22 @@ class UserModel extends BaseModel
     }
 
     public function register($username, $password, $confirmpassword, $email, $phone){
-        
+        $table = self::TABLE;
+        $sql = "SELECT * FROM ${table} WHERE username='${username}' OR email='${email}' OR phone='${phone}'";
+        $result = $this->_query($sql);
+        $result = $result['data'];
+        if (count($result) > 0) {
+            return null;
+        }
+        if($password !== $confirmpassword) {
+            return null;
+        }
+        $dataUser = [
+            "username" => $username,
+            "email" => $email,
+            "password" => $password,
+            "phone" => $phone
+        ];
+        return $this->create(self::TABLE, $dataUser);
     }
 }

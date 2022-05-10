@@ -13,6 +13,20 @@ class ProductModel  extends BaseModel
         return $this->findById(self::TABLE, $id, $select);
     }
 
+    public function getByKeyword($keyword, $select = ["*"])
+    {
+        $table = self::TABLE;
+        $sql = "SELECT * FROM ${table} WHERE name LIKE '%${keyword}%'";
+        return $this->_query($sql);
+    }
+
+    public function getByCategory($id, $select = ["*"])
+    {
+        $table = self::TABLE;
+        $sql = "SELECT * FROM ${table} WHERE category_id = ${id}";
+        return $this->_query($sql);
+    }
+
     public function deleteById($id)
     {
         return $this->delete(self::TABLE, $id);

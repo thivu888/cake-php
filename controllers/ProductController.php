@@ -12,13 +12,25 @@ class ProductController extends BaseController
 
     public function index()
     {
+        die($_GET['id']);
         $products = $this->productModel->getAll();
         return $this->view('fontend.products.index', [
             "products" => $products,
         ]);
     }
 
-    public function show()
+    public function category()
+    {
+        if(isset($_GET['id'])) {
+            $products = $this->productModel->getByCategory($_GET['id'] ?? '');
+            return $this->view('fontend.products.category', [
+                "products" => $products,
+            ]);
+        }
+     
+    }
+
+    public function detail()
     {
         $id = $_GET['id'];
         $product = $this->productModel->getById($id);

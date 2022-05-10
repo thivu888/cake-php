@@ -4,7 +4,8 @@
 
 
 	<?php include 'views/fontend/common/header.php' ?>
-	<?php include 'views/fontend/common/slide.php' ?>
+	
+	<?php count($products['data']) > 0 ? include 'views/fontend/common/slide.php' : '' ?>
 	<!--================Welcome Area =================-->
 	<section class="welcome_bakery_area">
 		<div class="container">
@@ -28,7 +29,7 @@
 				</div>
 			</div>
 			<?php
-			if (isset($listCategories)) {
+			if (isset($listCategories) && count($products['data']) > 0) {
 				foreach ($listCategories as &$category) {
 					$listProducts = $products['data'];
 					$listProductOfCategory = array_filter($listProducts, function ($product) use ($category) {
@@ -58,9 +59,11 @@
 								<?php } ?>
 							</div>
 						</div>
-			<?php }
+				<?php }
 				}
-			} ?>
+			} else { ?>
+				<h1>Sản phẩm trống</h1>
+			<?php } ?>
 		</div>
 	</section>
 

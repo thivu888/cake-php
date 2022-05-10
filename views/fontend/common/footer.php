@@ -57,12 +57,12 @@
 <div class="search_area zoom-anim-dialog mfp-hide" id="test-search">
   <div class="search_box_inner">
     <h3>Search</h3>
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+    <form method="get" class="input-group">
+      <input type="text" name="keysearch" class="form-control" placeholder="Search for...">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button"><i class="icon icon-Search"></i></button>
+        <button class="btn btn-default" type="submit"><i class="icon icon-Search"></i></button>
       </span>
-    </div>
+    </form>
   </div>
 </div>
 
@@ -89,7 +89,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Trở lại</button>
       </div>
     </div>
   </div>
@@ -103,10 +103,18 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        <form>
+        <form method="post" action="?controller=user&action=register">
           <div class="mb-3">
             <label class="form-label">Username</label>
             <input type="text" required name="username" class="form-control" aria-describedby="emailHelp">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" required name="email" class="form-control" aria-describedby="emailHelp">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" required name="phone" class="form-control" aria-describedby="emailHelp">
           </div>
           <div class="mb-3">
             <label class="form-label">Password</label>
@@ -114,24 +122,16 @@
             <label class="form-label">Confirm Password</label>
             <input type="password" required name="confirmpassword" class="form-control">
           </div>
-          <button style="width:100%; margin: 0 auto; background-color:#f195b2; color:#fff;" type="submit" class="btn">Đăng nhập</button>
+          <button style="width:100%; margin: 0 auto; background-color:#f195b2; color:#fff;" type="submit" class="btn">Đăng kí</button>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Trở lại</button>
       </div>
 
     </div>
   </div>
 </div>
-<?php
-// if (isset($action) && isset($status) && $action == 'login' && !$status) {
-//   echo "<script>
-//             $(function(){
-//                 alert('login fail');
-//             });  
-//     </script>";
-// } ?>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="public/js/jquery-3.2.1.min.js"></script>
