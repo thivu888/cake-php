@@ -104,7 +104,7 @@ class UserController extends BaseController
             $email = isset($_POST['email']) ? $_POST['email'] : "";
             $phone = isset($_POST['phone']) ? $_POST['phone'] : "";
             $confirmpassword = isset($_POST['confirmpassword']) ? $_POST['confirmpassword'] : "";
-            if (!$username || !$password || $confirmpassword || $phone || $email) {
+            if (!$username || !$password || !$confirmpassword || !$phone || !$email) {
                 if ($_SERVER["HTTP_REFERER"])
                     return header("Location: " . $_SERVER["HTTP_REFERER"]);
             }
@@ -112,14 +112,19 @@ class UserController extends BaseController
             if ($user === null) {
                 if ($_SERVER["HTTP_REFERER"])
                     return header("Location: " . $_SERVER["HTTP_REFERER"]);
+            }   
+            $user = $this->login($user, $password);
+            if ($user === null) {
+                if ($_SERVER["HTTP_REFERER"])
+                return header("Location: " . $_SERVER["HTTP_REFERER"]);
             }
             if (!$user['status']) {
                 if ($_SERVER["HTTP_REFERER"])
-                    return header("Location: " . $_SERVER["HTTP_REFERER"]);
+                return header("Location: " . $_SERVER["HTTP_REFERER"]);
             }
             $_SESSION['user'] = $user['data'];
             if ($_SERVER["HTTP_REFERER"])
-                return header("Location: " . $_SERVER["HTTP_REFERER"]);
+            return header("Location: " . $_SERVER["HTTP_REFERER"]);
             return header("Location: index.php ");
         } else {
             if ($_SERVER["HTTP_REFERER"])

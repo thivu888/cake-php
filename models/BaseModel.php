@@ -44,7 +44,7 @@ class BaseModel extends Database
     public function create($table,$data = [])
     {
         if (count($data) === 0) {
-            return ["status" => "fail"];
+            return null;
         }
         $keys = implode(",",array_keys($data)); 
         $dataValue = array_map(function($value){
@@ -54,13 +54,9 @@ class BaseModel extends Database
         $sql = "INSERT INTO ${table} (${keys}) VALUES (${values})";
         $result = $this->_mutation($sql);
         if ($result) {
-            return [
-                "status" => "success",
-                "message" => "created"
-            ];
+            return true;
         } else {
-            echo "Error: " . $sql . "<br>" . mysqli_error($this->connect);
-            return ["status" => "fail"];
+            return null;
         }
     }
     public function delete($table, $id)
@@ -80,6 +76,7 @@ class BaseModel extends Database
     protected function _query($sql)
     {
         $result = $this->connect->query($sql);
+
         $data = [];
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
