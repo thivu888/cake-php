@@ -5,7 +5,7 @@
                 <a href="tel: +840123456789"><i class="fa fa-phone" aria-hidden="true"></i> 0123456789</a>
                 <a href="mailto:info@cakebakery.com"><i class="fa fa-envelope-o" aria-hidden="true"></i> info@cakebakery.com</a>
             </div>
-            <div class="float-right">
+            <div class="float-right" style="margin-top:16px;">
                 <ul class="h_social list_style">
                     <li><a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
                     <li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -13,9 +13,14 @@
                     <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                 </ul>
                 <ul class="h_search list_style">
-                    <li class="shop_cart"><a href="#"><i class="lnr lnr-cart">
-                                <p class="number_cart">3</p>
-                            </i></a></li>
+                    <li class="shop_cart">
+                        <i class="lnr lnr-cart">
+                            <?php if (!empty($_SESSION['cart'])) { ?>
+                                <p class="number_cart" id="cart-icon"><?= count($_SESSION['cart']) ?></p>
+                            <?php } ?>
+                        </i>
+                        <div class="view-cart">123</div>
+                    </li>
                     <li><a class="popup-with-zoom-anim" href="#test-search"><i class="fa fa-search"></i></a></li>
                 </ul>
             </div>
@@ -42,14 +47,13 @@
                         </li>
                         <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sản phẩm</a>
-                            <?php if (isset($categories)) { ?>
+                            <?php if (isset($categories) && $categories['data']) { ?>
                                 <ul class="dropdown-menu">
                                     <?php
-                                    if (!$categories['data']) return;
                                     $listCategories = $categories['data'];
                                     foreach ($listCategories as &$category) {
                                     ?>
-                                        <li><a href="?controller=product&action=category&id=<?=$category['id']?>"><?= $category['name'] ?></a></li>
+                                        <li><a href="?controller=product&action=category&id=<?= $category['id'] ?>"><?= $category['name'] ?></a></li>
                                     <?php } ?>
                                 </ul>
                             <?php } ?>

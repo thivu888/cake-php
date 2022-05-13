@@ -21,7 +21,7 @@ class HomeController extends BaseController
         $categories = $this->CategoryModel->getAll();
         return $this->view('fontend.homes.index', [
             "products" => $products,
-            "categories" => $categories
+            "categories" => $categories,
         ]);
     }
 }

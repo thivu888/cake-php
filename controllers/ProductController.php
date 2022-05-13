@@ -6,13 +6,14 @@ class ProductController extends BaseController
 
     public function __construct()
     {
+        $this->loadModel('CategoryModel');
         $this->loadModel('ProductModel');
         $this->productModel = new ProductModel;
+        $this->CategoryModel = new CategoryModel;
     }
 
     public function index()
     {
-        die($_GET['id']);
         $products = $this->productModel->getAll();
         return $this->view('fontend.products.index', [
             "products" => $products,
@@ -21,21 +22,31 @@ class ProductController extends BaseController
 
     public function category()
     {
-        if(isset($_GET['id'])) {
+        if (isset($_GET['id'])) {
             $products = $this->productModel->getByCategory($_GET['id'] ?? '');
+            $categories = $this->CategoryModel->getAll();
             return $this->view('fontend.products.category', [
                 "products" => $products,
+                "categories" => $categories
             ]);
+        } else {
         }
-     
     }
 
     public function detail()
     {
         $id = $_GET['id'];
         $product = $this->productModel->getById($id);
-        return $this->view('fontend.products.show', [
+        $products = ["data" => []];
+
+        if ($product['data'] && count($product['data']) > 0) {
+            $products = $this->productModel->getByCategory($product['data'][0]['category_id']);
+        }
+
+
+        return $this->view('fontend.products.detail', [
             "product" => $product,
+            "products" => $products
         ]);
     }
 

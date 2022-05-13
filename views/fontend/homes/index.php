@@ -4,7 +4,6 @@
 
 
 	<?php include 'views/fontend/common/header.php' ?>
-	
 	<?php count($products['data']) > 0 ? include 'views/fontend/common/slide.php' : '' ?>
 	<!--================Welcome Area =================-->
 	<section class="welcome_bakery_area">
@@ -46,13 +45,13 @@
 								foreach ($listProductOfCategory as &$product) { ?>
 									<div class="item">
 										<div class="cake_feature_item">
-											<div class="cake_img">
+											<div class="cake_img" onclick="redirectProductDetails(<?= $product['id'] ?>)">
 												<img src=<?= "public/img/cake-feature/c-feature-1.jpg" ?> alt="">
 											</div>
 											<div class="cake_text">
 												<h4><?= "$" .  $product['price']  ?></h4>
 												<h3><?= $product['name'] ?></h3>
-												<a class="pest_btn" href="#">Add to cart</a>
+												<p onclick="addToCart(<?= $product['id'] ?>)" class="pest_btn" >Add to cart</p>
 											</div>
 										</div>
 									</div>

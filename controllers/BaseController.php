@@ -23,4 +23,11 @@ class BaseController
     {
         require(self::MODEL_FOLDER_NAME . '/' . $modelPath . '.php');
     }
+
+    protected function formatRespon($message,$data) {
+        return json_encode([
+            "message" => $message,
+            "data" => $data,
+        ]);
+    }
 }
