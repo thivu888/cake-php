@@ -4,12 +4,10 @@ class CategoryController extends BaseController
 {
     public function index()
     {
-        return $this->view('fontend.categories.index', [
-            "categories" => ["one" => 1, "two" => 2, "three" => 3]
-        ]);
+        return $this->view('fontend.categories.index');
     }
 
-    public function show()
+    public function store()
     {
         echo __METHOD__;
     }

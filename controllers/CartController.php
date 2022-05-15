@@ -6,11 +6,16 @@ class CartController extends BaseController
     public function __construct()
     {
         $this->loadModel('ProductModel');
+        $this->loadModel('ShippingModel');
         $this->productModel = new ProductModel;
+        $this->shippingModel = new ShippingModel;
     }
 
     public function index() {
-        return $this->view('fontend.carts.index');
+        $shippings = $this->shippingModel->getAll();
+        return $this->view('fontend.carts.index',[
+            "shippings" => $shippings
+        ]);
     }
 
     public function goback() {
@@ -19,6 +24,28 @@ class CartController extends BaseController
         }else {
             header("Location: ./index.php");
         }
+    }
+
+    public function destroy() {
+        if ($_GET['id']) {
+            $id = $_GET['id'];
+            if (isset($_SESSION["cart"])) {
+                if (!array_key_exists($id, $_SESSION["cart"])) {
+                    if (isset($_SERVER["HTTP_REFERER"])) {
+                        header("Location: " . $_SERVER["HTTP_REFERER"]);
+                    } else {
+                        header("Location: ./index.php");
+                    }
+                }
+                unset($_SESSION["cart"][$id]);
+                $this->goback();
+            }else {
+                $this->goback();
+            }
+        } else {
+            $this->goback();
+        }
+
     }
 
     public function delete() {
@@ -32,23 +59,26 @@ class CartController extends BaseController
                         header("Location: ./index.php");
                     }
                 }
-
+              
                 $quantity = $_SESSION["cart"][$id]['quantity'] - 1;
                 if($quantity <= 0) {
-                    unset($_SESSION["cart"][$id]);
-                    if(!array_key_exists($id, $_SESSION["cart"])){
-                      $this->goback();
+                    if (!array_key_exists($id, $_SESSION["cart"])) {
+                        $this->goback();
                     }
-                }
-                $_SESSION["cart"][$id]['quantity'] = $quantity;
-                if(!array_key_exists($id, $_SESSION["cart"])){
+                    unset($_SESSION["cart"][$id]);
+                    $this->goback();
+                } else {
+                    if (!array_key_exists($id, $_SESSION["cart"])) {
+                        $this->goback();
+                    }
+                    $_SESSION["cart"][$id]['quantity'] = $quantity;
                     $this->goback();
                 }
             } else {
-                echo "!23";
+                $this->goback();
             }
         } else {
-            echo "!23";
+            $this->goback();
         }
     }
 
@@ -64,27 +94,37 @@ class CartController extends BaseController
                     $number = $_POST['data']['count'];
                     if($product['quantity'] < $number) {
                         echo ($this->formatRespon("Đã hết hàng",count($_SESSION["cart"]) ?? 0));
+                        return;
                     }
                     if (isset($_SESSION["cart"])) {
                         if (!array_key_exists($product['id'], $_SESSION["cart"])) {
                             $product['quantity'] = $number;
                             $_SESSION["cart"][$product['id']] = $product;
                             echo ($this->formatRespon("Thêm sản phẩm thành công",count($_SESSION["cart"])));
+                            return;
+
                         } else {
                             $product['quantity'] = $_SESSION["cart"][$product['id']]['quantity'] + $number;
                             $_SESSION["cart"][$product['id']] =  $product;
                             echo ($this->formatRespon("Thêm sản phẩm thành công",count($_SESSION["cart"])));
+                            return;
+
                         }
                     } else {
                         $product['quantity'] = $number;
                         $_SESSION["cart"][$product['id']] = $product;
                         echo ($this->formatRespon("Thêm sản phẩm thành công",count($_SESSION["cart"])));
+                        return;
+
                     }
                 } else {
                     echo ($this->formatRespon("Thêm sản phẩm thất bại",count($_SESSION["cart"]) ?? 0));
+                    return;
+
                 }
             } else {
                 echo ($this->formatRespon("Thêm sản phẩm thất bại",count($_SESSION["cart"]) ?? 0));
+                return;
             }
         }else {
             if ($_GET['id']) {
