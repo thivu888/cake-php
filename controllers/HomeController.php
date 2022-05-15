@@ -13,10 +13,10 @@ class HomeController extends BaseController
     public function index()
     {
         $products = [];
-        if($_GET['keysearch']) {
+        if (isset($_GET['keysearch'])) {
             $products = $this->productModel->getByKeyword($_GET['keysearch']);
         } else {
-            $products = $this->productModel->getAll();
+            $products = $this->productModel->getAllEnoughQuantity();
         }
         $categories = $this->CategoryModel->getAll();
         return $this->view('fontend.homes.index', [

@@ -15,8 +15,10 @@ class ProductController extends BaseController
     public function index()
     {
         $products = $this->productModel->getAll();
+        $categories = $this->CategoryModel->getAll();
         return $this->view('fontend.products.index', [
             "products" => $products,
+            "categories" => $categories
         ]);
     }
 
@@ -52,41 +54,93 @@ class ProductController extends BaseController
 
     public function delete()
     {
-        $id = $_GET['id'];
-        $product = $this->productModel->deleteById($id);
-        return $this->view('fontend.products.delete', [
-            "product" => $product,
-        ]);
+        try {
+            $id = $_POST['data']['id'];
+            $this->productModel->deleteById($id);
+            echo "true";
+        } catch (\Throwable $th) {
+            return "false";
+        }
     }
 
     public function create()
     {
-        $data = [
-            "name" => "quả táo",
-            "price" => 7777,
-            "image" => "adu.jpg",
-            "category_id" => 1,
-            "description" => "táo rất ngon",
-        ];
-        $product = $this->productModel->store($data);
-        return $this->view('fontend.products.create', [
-            "product" => $product,
-        ]);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            try {
+                $check = getimagesize($_FILES["image"]["tmp_name"]);
+                if ($check !== false) {
+                    echo "File is an image - " . $check["mime"] . ".";
+                } else {
+                    echo "File is not an image.";
+                }
+                $image = $this->uploadFile($_FILES["image"]);
+                $name = isset($_POST["name"]) ?  $_POST["name"] : '';
+                $price = isset($_POST["price"]) ?  $_POST["price"] : '';
+                $quantity = isset($_POST["quantity"]) ?  $_POST["quantity"] : '';
+                $category_id = isset($_POST["category_id"]) ?  $_POST["category_id"] : '';
+                $description = isset($_POST["description"]) ?  $_POST["description"] : '';
+                $id = isset($_POST["idproduct"]) ?  $_POST["idproduct"] : '';
+                if (!$name || !$price || !$quantity || !$category_id || !$description || !$image) {
+                    if ($_SERVER["HTTP_REFERER"])
+                        header("Location: " . $_SERVER["HTTP_REFERER"]);
+                    header("Location: ./admin.php?controller=product");
+                    return;
+                }
+                $data = [
+                    "name" => $name,
+                    "price" => $price,
+                    "quantity" => $quantity,
+                    "image" => $image,
+                    "category_id" => $category_id,
+                    "description" => $description,
+                ];
+                if ($id) {
+                    $this->productModel->updateById($id, $data);
+                } else {
+                    $product = $this->productModel->store($data);
+                }
+                if ($_SERVER["HTTP_REFERER"])
+                    header("Location: " . $_SERVER["HTTP_REFERER"]);
+                header("Location: ./admin.php?controller=product");
+            } catch (\Throwable $th) {
+                if ($_SERVER["HTTP_REFERER"])
+                    header("Location: " . $_SERVER["HTTP_REFERER"]);
+                header("Location: ./admin.php?controller=product");
+            }
+        }
     }
 
-    public function update()
+    function uploadFile($file)
     {
-        $id = $_GET['id'];
-        $data = [
-            "name" => "quả táo",
-            "price" => 7777,
-            "image" => "adu.jpg",
-            "category_id" => 1,
-            "description" => "táo rất ngon",
-        ];
-        $product = $this->productModel->updateById($id, $data);
-        return $this->view('fontend.products.update', [
-            "product" => $product,
-        ]);
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($file["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        // Check file size
+        if ($file["size"] > 500000) {
+            return null;
+            $uploadOk = 0;
+        }
+
+        // Allow certain file formats
+        if (
+            $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif"
+        ) {
+            return null;
+            $uploadOk = 0;
+        }
+
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            return null;
+            // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($file["tmp_name"], $target_file)) {
+                return $target_file;
+            } else {
+                return null;
+            }
+        }
     }
 }

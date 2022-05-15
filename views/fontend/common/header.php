@@ -14,12 +14,13 @@
                 </ul>
                 <ul class="h_search list_style">
                     <li class="shop_cart">
-                        <i class="lnr lnr-cart">
-                            <?php if (!empty($_SESSION['cart'])) { ?>
-                                <p class="number_cart" id="cart-icon"><?= count($_SESSION['cart']) ?></p>
-                            <?php } ?>
-                        </i>
-                        <div class="view-cart">123</div>
+                        <a href="?controller=cart">
+                            <i class="lnr lnr-cart" id="icon-cart-i">
+                                <?php if (!empty($_SESSION['cart'])) { ?>
+                                    <p style="top:1px;" class="number_cart" id="cart-icon"><?= count($_SESSION['cart']) ?></p>
+                                <?php } ?>
+                            </i>
+                        </a>
                     </li>
                     <li><a class="popup-with-zoom-anim" href="#test-search"><i class="fa fa-search"></i></a></li>
                 </ul>
@@ -47,7 +48,7 @@
                         </li>
                         <li class="dropdown submenu">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sản phẩm</a>
-                            <?php if (isset($categories) && $categories['data']) { ?>
+                            <?php if (isset($categories) && isset($categories['data'])) { ?>
                                 <ul class="dropdown-menu">
                                     <?php
                                     $listCategories = $categories['data'];
@@ -59,11 +60,7 @@
                             <?php } ?>
                         </li>
                         <li class="dropdown submenu">
-                            <a href="#">Khác</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="./commingsoon.php">Dụng cụ làm bánh</a></li>
-                                <li><a href="./commingsoon.php">Nguyên liệu làm bánh</a></li>
-                            </ul>
+                            <a href="?controller=contact">Phản hồi</a>
                         </li>
                     </ul>
                     <ul class=" navbar-nav justify-content-end">
@@ -71,7 +68,7 @@
                             <li class="dropdown submenu">
                                 <a href="#"><?= $_SESSION['user']['username'] ?></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Xem đơn hàng</a></li>
+                                    <li><a href="?controller=order">Xem đơn hàng</a></li>
                                     <li><a href="?controller=user&action=logout">Đăng xuất</a></li>
                                 </ul>
                             </li>

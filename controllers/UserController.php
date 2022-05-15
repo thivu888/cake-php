@@ -7,64 +7,69 @@ class UserController extends BaseController
     public function __construct()
     {
         $this->loadModel('userModel');
+        $this->loadModel('orderModel');
+        $this->loadModel('orderItemModel');
+        $this->orderItem = new orderItemModel;
         $this->userModel = new userModel;
+        $this->orderModel = new orderModel;
     }
 
     public function index()
     {
-        $products = $this->productModel->getAll();
-        return $this->view('fontend.products.index', [
-            "products" => $products,
-        ]);
-    }
-
-    public function show()
-    {
-        $id = $_GET['id'];
-        $product = $this->productModel->getById($id);
-        return $this->view('fontend.products.show', [
-            "product" => $product,
+        $users = $this->userModel->getAll();
+        return $this->view('fontend.admin.users.index', [
+            "users" => $users,
         ]);
     }
 
     public function delete()
     {
-        $id = $_GET['id'];
-        $product = $this->productModel->deleteById($id);
-        return $this->view('fontend.products.delete', [
-            "product" => $product,
-        ]);
-    }
-
-    public function create()
-    {
-        $data = [
-            "name" => "quả táo",
-            "price" => 7777,
-            "image" => "adu.jpg",
-            "category_id" => 1,
-            "description" => "táo rất ngon",
-        ];
-        $product = $this->productModel->store($data);
-        return $this->view('fontend.products.create', [
-            "product" => $product,
-        ]);
+        try {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (isset($_POST['data']) && isset($_POST['data']['id'])) {
+                    $id = $_POST['data']['id'];
+                    $orders = $this->orderModel->getAllByUserId($id);
+                    $orders = $orders['data'];
+                    foreach ($orders as &$value) {
+                        $this->orderItem->deleteByOrderId($value['id']);
+                    }
+                    $this->orderModel->deleteByUserId($id);
+                    $this->userModel->deleteById($id);
+                    return true;
+                }
+            }
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     public function update()
     {
-        $id = $_GET['id'];
-        $data = [
-            "name" => "quả táo",
-            "price" => 7777,
-            "image" => "adu.jpg",
-            "category_id" => 1,
-            "description" => "táo rất ngon",
-        ];
-        $product = $this->productModel->updateById($id, $data);
-        return $this->view('fontend.products.update', [
-            "product" => $product,
-        ]);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $password = isset($_POST['password']) ? $_POST['password'] : "";
+            $email = isset($_POST['email']) ? $_POST['email'] : "";
+            $phone = isset($_POST['phone']) ? $_POST['phone'] : "";
+            $id = isset($_POST['userid']) ? $_POST['userid'] : "";
+            if ( !$password || !$phone || !$email || !$id) {
+                if ($_SERVER["HTTP_REFERER"])
+                return header("Location: " . $_SERVER["HTTP_REFERER"]);
+            }
+
+            $data = [
+                "email" => $email,
+                "phone" => $phone,
+                "password" => $password
+            ];
+
+            $this->userModel->updateById($id,$data);
+            if ($_SERVER["HTTP_REFERER"])
+            return header("Location: " . $_SERVER["HTTP_REFERER"]);
+            return header("Location: index.php ");
+        } else {
+            if ($_SERVER["HTTP_REFERER"])
+            return header("Location: " . $_SERVER["HTTP_REFERER"]);
+            return header("Location: index.php ");
+        }
     }
 
     public function login()
@@ -108,23 +113,23 @@ class UserController extends BaseController
                 if ($_SERVER["HTTP_REFERER"])
                     return header("Location: " . $_SERVER["HTTP_REFERER"]);
             }
-            $user = $this->userModel->register($username, $password, $confirmpassword,$email,$phone);
+            $user = $this->userModel->register($username, $password, $confirmpassword, $email, $phone);
             if ($user === null) {
                 if ($_SERVER["HTTP_REFERER"])
                     return header("Location: " . $_SERVER["HTTP_REFERER"]);
-            }   
+            }
             $user = $this->login($user, $password);
             if ($user === null) {
                 if ($_SERVER["HTTP_REFERER"])
-                return header("Location: " . $_SERVER["HTTP_REFERER"]);
+                    return header("Location: " . $_SERVER["HTTP_REFERER"]);
             }
             if (!$user['status']) {
                 if ($_SERVER["HTTP_REFERER"])
-                return header("Location: " . $_SERVER["HTTP_REFERER"]);
+                    return header("Location: " . $_SERVER["HTTP_REFERER"]);
             }
             $_SESSION['user'] = $user['data'];
             if ($_SERVER["HTTP_REFERER"])
-            return header("Location: " . $_SERVER["HTTP_REFERER"]);
+                return header("Location: " . $_SERVER["HTTP_REFERER"]);
             return header("Location: index.php ");
         } else {
             if ($_SERVER["HTTP_REFERER"])

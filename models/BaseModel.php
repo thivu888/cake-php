@@ -1,10 +1,10 @@
 <?php
 class BaseModel extends Database
 {
-    protected $connect;
+    public static  $connect;
     public function __construct()
     {
-        $this->connect = $this->connect();
+        self::$connect = $this->connect();
     }
     public function findAll($table, $select = ["*"])
     {
@@ -16,7 +16,7 @@ class BaseModel extends Database
     public function findById($table, $id, $select = ["*"])
     {
         $select = implode(',', $select);
-        $sql = "SELECT ${select} FROM ${table} WHERE id = ${id}";
+        $sql = "SELECT ${select} FROM ${table} WHERE id = '${id}'";
         $data = $this->_query($sql);
         return  $data;
     }
@@ -30,7 +30,7 @@ class BaseModel extends Database
             $dataUpdate = $dataUpdate . "${key} = '${val}'" . ",";
         }
         $dataUpdate = substr($dataUpdate, 0, -1);
-        $sql = "UPDATE ${table} SET ${dataUpdate} WHERE id = ${id}";
+        $sql = "UPDATE ${table} SET ${dataUpdate} WHERE id = '${id}'";
         $result = $this->_mutation($sql);
         if ($result) {
             return [
@@ -41,27 +41,27 @@ class BaseModel extends Database
             return ["status" => "fail"];
         }
     }
-    public function create($table,$data = [])
+    public function create($table, $data = [])
     {
         if (count($data) === 0) {
             return null;
         }
-        $keys = implode(",",array_keys($data)); 
-        $dataValue = array_map(function($value){
+        $keys = implode(",", array_keys($data));
+        $dataValue = array_map(function ($value) {
             return "'" . $value . "'";
-        },$data);
-        $values = implode(",",($dataValue)); 
+        }, $data);
+        $values = implode(",", ($dataValue));
         $sql = "INSERT INTO ${table} (${keys}) VALUES (${values})";
         $result = $this->_mutation($sql);
         if ($result) {
-            return true;
+            return  $result;
         } else {
             return null;
         }
     }
     public function delete($table, $id)
     {
-        $sql = "DELETE FROM ${table} WHERE id = ${id}";
+        $sql = "DELETE FROM ${table} WHERE id = '${id}'";
         $result = $this->_mutation($sql);
         if ($result) {
             return [
@@ -75,12 +75,14 @@ class BaseModel extends Database
 
     protected function _query($sql)
     {
-        $result = $this->connect->query($sql);
+        $result = self::$connect->query($sql);
 
         $data = [];
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                array_push($data, $row);
+        if ($result) {
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    array_push($data, $row);
+                }
             }
         }
         return [
@@ -90,8 +92,11 @@ class BaseModel extends Database
 
     protected function _mutation($sql)
     {
-        if ($this->connect->query($sql) === TRUE) {
-            return true;
+        if (self::$connect->query($sql) === TRUE) {
+            if (self::$connect->insert_id) {
+                return  self::$connect->insert_id;
+            }
+            return  true;
         } else {
             return false;
         }

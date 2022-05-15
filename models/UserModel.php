@@ -5,7 +5,8 @@ class UserModel extends BaseModel
 
     public function getAll($select = ["*"])
     {
-        return $this->findAll(self::TABLE, $select);
+        $sql = "SELECT users.* , COUNT(orders.user_id) as 'totalorders', sum(orders.cost)  AS 'totalcost' FROM users LEFT JOIN orders on orders.user_id = users.id GROUP BY users.id";
+        return $this->_query($sql);
     }
 
     public function getById($id, $select = ["*"])
@@ -37,8 +38,8 @@ class UserModel extends BaseModel
         if (count($result) === 0) {
             return null;
         }
-        if($result[0]['password'] !== $password) {
-           
+        if ($result[0]['password'] !== $password) {
+
             return [
                 "status" => false,
                 "message" => "Invalid password"
@@ -50,7 +51,8 @@ class UserModel extends BaseModel
         ];
     }
 
-    public function register($username, $password, $confirmpassword, $email, $phone){
+    public function register($username, $password, $confirmpassword, $email, $phone)
+    {
         $table = self::TABLE;
         $sql = "SELECT * FROM ${table} WHERE username='${username}' OR email='${email}' OR phone='${phone}'";
         $result = $this->_query($sql);
@@ -58,7 +60,7 @@ class UserModel extends BaseModel
         if (count($result) > 0) {
             return null;
         }
-        if($password !== $confirmpassword) {
+        if ($password !== $confirmpassword) {
             return null;
         }
         $dataUser = [

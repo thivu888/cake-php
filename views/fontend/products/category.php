@@ -12,7 +12,7 @@
                         <div class="service_m_item">
                             <div class="service_img_inner">
                                 <div class="service_img cursor-pointer" onclick="redirectProductDetails(<?= $product['id'] ?>)">
-                                    <img class="rounded-circle" src="public/img/service/service-1.png" alt="">
+                                    <img class="rounded-circle" src=<? $product['image']?> alt="">
                                 </div>
                             </div>
                             <div></div>

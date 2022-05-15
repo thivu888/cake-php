@@ -2,10 +2,14 @@
 require './core/Database.php';
 require './models/BaseModel.php';
 require './controllers/BaseController.php';
-$listController = ['CategoryController', 'ContactController', 'OrderController', 'ProductController', 'CartController', 'NotFoundController', 'HomeController', 'UserController'];
+$listController = ['CategoryController', 'DiscountController', 'ContactController', 'AdminOrderController', 'AdminController', 'OrderController', 'ProductController', 'CartController', 'NotFoundController', 'HomeController', 'UserController'];
 ob_start();
 session_start();
-$controllerName = ucfirst(($_REQUEST['controller'] ?? 'home') . 'Controller');
+// if(!isset($_SESSION['admin'])) {
+//     return;
+// }
+$controllerName = ucfirst(($_REQUEST['controller'] ?? 'Admin') . 'Controller');
+
 if (!in_array($controllerName, $listController)) {
     $controllerName = 'NotFoundController';
 }
