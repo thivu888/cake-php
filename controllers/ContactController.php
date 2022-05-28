@@ -20,6 +20,7 @@ class ContactController extends BaseController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = isset($_POST['name']) ? $_POST['name'] : "";
+
             $email = isset($_POST['email']) ? $_POST['email'] : "";
             $message = isset($_POST['message']) ? $_POST['message'] : "";
             if (!$name || !$email || !$message) {

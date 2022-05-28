@@ -52,6 +52,7 @@ class BaseModel extends Database
         }, $data);
         $values = implode(",", ($dataValue));
         $sql = "INSERT INTO ${table} (${keys}) VALUES (${values})";
+
         $result = $this->_mutation($sql);
         if ($result) {
             return  $result;
