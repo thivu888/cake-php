@@ -69,6 +69,9 @@
                                 <a href="#"><?= $_SESSION['user']['username'] ?></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="?controller=order">Xem đơn hàng</a></li>
+                                    <?php if($_SESSION['user']['role'] == 'admin'){ ?>
+                                    <li><a href="admin.php">Trang quản trị</a></li>
+                                    <?php } ?>
                                     <li><a href="?controller=user&action=logout">Đăng xuất</a></li>
                                 </ul>
                             </li>

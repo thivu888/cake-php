@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2022 at 07:07 PM
+-- Generation Time: May 28, 2022 at 06:09 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -49,9 +49,9 @@ INSERT INTO `categories` (`id`, `name`) VALUES
 
 CREATE TABLE `contacts` (
   `id` int(11) NOT NULL,
-  `name` int(11) NOT NULL,
-  `email` int(11) NOT NULL,
-  `content` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `content` varchar(255) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -60,17 +60,8 @@ CREATE TABLE `contacts` (
 --
 
 INSERT INTO `contacts` (`id`, `name`, `email`, `content`, `create_at`) VALUES
-(1, 0, 0, 0, '2022-05-18 16:59:57'),
-(2, 0, 0, 0, '2022-05-18 17:01:00'),
-(3, 0, 0, 0, '2022-05-18 17:01:41'),
-(4, 0, 0, 0, '2022-05-18 17:01:44'),
-(5, 0, 0, 0, '2022-05-18 17:01:50'),
-(6, 0, 0, 0, '2022-05-18 17:03:54'),
-(7, 0, 0, 0, '2022-05-18 17:04:07'),
-(8, 0, 0, 0, '2022-05-18 17:04:12'),
-(9, 0, 0, 0, '2022-05-18 17:04:30'),
-(10, 0, 0, 0, '2022-05-18 17:05:34'),
-(11, 0, 0, 0, '2022-05-18 17:05:59');
+(16, '0', '0', '123', '2022-05-21 07:39:27'),
+(17, 'vu', '123', '123', '2022-05-21 07:44:32');
 
 -- --------------------------------------------------------
 
@@ -91,7 +82,7 @@ CREATE TABLE `discounts` (
 --
 
 INSERT INTO `discounts` (`id`, `value`, `due_date`, `start_date`, `count`) VALUES
-('giam10', '10', '2022-05-15 07:49:11', '2022-05-15 07:49:11', 0);
+('vu12', '2', '2022-05-28 13:35:09', '2022-05-28 13:35:09', 2);
 
 -- --------------------------------------------------------
 
@@ -131,23 +122,12 @@ CREATE TABLE `orderitems` (
 --
 
 INSERT INTO `orderitems` (`id`, `order_id`, `product_id`, `quantity`) VALUES
-(28, 118, 4, 2),
-(72, 1, 4, 2),
-(98, 189, 4, 2),
-(99, 190, 4, 2),
-(100, 191, 4, 2),
-(101, 192, 4, 2),
-(102, 193, 4, 2),
-(104, 195, 4, 2),
-(105, 201, 4, 2),
-(106, 202, 4, 2),
-(107, 214, 4, 1),
-(108, 216, 2, 1),
-(109, 217, 5, 1),
-(110, 218, 2, 1),
-(111, 218, 5, 2),
-(112, 218, 4, 1),
-(113, 218, 3, 1);
+(115, 220, 4, 1),
+(116, 221, 11, 1),
+(117, 225, 10, 1),
+(118, 225, 12, 1),
+(119, 226, 12, 2),
+(120, 226, 11, 1);
 
 -- --------------------------------------------------------
 
@@ -159,7 +139,7 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
-  `address` int(11) NOT NULL,
+  `address` varchar(255) NOT NULL,
   `cost` float NOT NULL,
   `discount_id` varchar(255) NOT NULL,
   `shipping` int(11) NOT NULL DEFAULT 1
@@ -170,15 +150,10 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `status`, `address`, `cost`, `discount_id`, `shipping`) VALUES
-(194, 1, 1, 0, 6, '', 1),
-(195, 1, 1, 0, 6, '', 1),
-(196, 1, 1, 0, 6, '', 1),
-(201, 1, 1, 0, 6, '', 1),
-(202, 1, 1, 0, 6, '', 1),
-(214, 1, 1, 0, 3, '', 1),
-(216, 1, 1, 0, 5, '', 1),
-(217, 1, 1, 0, 8, '', 1),
-(218, 1, 1, 0, 89, '', 1);
+(220, 2, 1, '0', 3, '', 1),
+(221, 5, 2, '0', 2, '', 1),
+(225, 5, 2, '', 4, '', 1),
+(226, 6, 1, '', 6, '', 1);
 
 -- --------------------------------------------------------
 
@@ -187,7 +162,7 @@ INSERT INTO `orders` (`id`, `user_id`, `status`, `address`, `cost`, `discount_id
 --
 
 CREATE TABLE `products` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(200) NOT NULL,
   `price` float NOT NULL,
   `image` varchar(255) NOT NULL,
@@ -204,10 +179,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `price`, `image`, `category_id`, `created_at`, `updated_at`, `description`, `quantity`, `sold`) VALUES
-(2, 'Bánh mì hà nội', 5, 'public/img/cake-feature/c-feature-1.jpg', 2, '2022-05-10 12:22:58', '0000-00-00 00:00:00', 'Bánh mì hà nội thơm ngon nóng giòn', 2, 2),
-(3, 'Bánh sinh nhật 1', 65, 'public/img/cake-feature/c-feature-1.jpg', 3, '2022-05-07 17:18:37', '2022-05-07 17:18:37', 'Bánh sinh nhật đặc biệt rất ngon', 0, 1),
-(4, 'Bánh kem 1', 3, 'public/img/cake-feature/c-feature-1.jpg', 1, '2022-05-07 17:19:01', '2022-05-07 17:19:01', 'Bánh kem đặc biệt rất ngon', 3, 1),
-(5, 'Bánh mì sài gòn', 8, 'public/img/cake-feature/c-feature-1.jpg', 2, '2022-05-07 17:24:02', '2022-05-07 17:24:02', 'Bánh mì sài gòn thơm ngon nóng giòn', 3, 3);
+(10, 'WFH', 2, 'uploads/zlODZKn3LipLgtranh_phong_canh_dep_nhat3.jpg', 1, '2022-05-28 06:54:45', '2022-05-28 06:54:45', '223rư', 0, 1),
+(11, 'bánh mì ngon', 2, 'uploads/z2897797850627_4291253122b4a511297e9350004ee5c3.png', 2, '2022-05-28 07:04:16', '2022-05-28 07:04:16', 'bánh ngon nhất hà nội', 1, 2),
+(12, 'phan quang vu', 2, 'uploads/bg.jpg', 1, '2022-05-28 07:16:21', '2022-05-28 07:16:21', 'bánh ngon nhất hà nội', 0, 3);
 
 -- --------------------------------------------------------
 
@@ -261,18 +235,16 @@ CREATE TABLE `users` (
   `phone` varchar(255) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `update_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `role` varchar(255) NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `phone`, `create_at`, `update_at`, `password`) VALUES
-(1, 'thivu888', 'vu@gmail.com', '0345475176', '2022-05-09 16:06:01', '2022-05-09 16:06:01', '123'),
-(2, 'vuvip198', 'bopy197xx@gmail.com', '0932023992', '2022-05-10 14:18:07', '2022-05-10 14:18:07', '123'),
-(3, 'thivu88811', 'bopy1972xx@gmail.com', '0345475143', '2022-05-15 10:56:45', '2022-05-15 10:56:45', '123'),
-(4, 'vuvip198123', 'bopy197x3x@gmail.com', '0932023932', '2022-05-15 14:46:58', '2022-05-15 14:46:58', '123');
+INSERT INTO `users` (`id`, `username`, `email`, `phone`, `create_at`, `update_at`, `password`, `role`) VALUES
+(7, 'admin', 'admin@gmail.com', '0123456789', '2022-05-28 14:19:00', '2022-05-28 14:19:00', 'admin', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -306,7 +278,8 @@ ALTER TABLE `introduces`
 -- Indexes for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`);
 
 --
 -- Indexes for table `orders`
@@ -318,7 +291,8 @@ ALTER TABLE `orders`
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
-  ADD UNIQUE KEY `id` (`id`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `category_id` (`category_id`);
 
 --
 -- Indexes for table `shippings`
@@ -346,13 +320,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `introduces`
@@ -364,19 +338,19 @@ ALTER TABLE `introduces`
 -- AUTO_INCREMENT for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=219;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `shippings`
@@ -394,7 +368,23 @@ ALTER TABLE `statusorders`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `orderitems`
+--
+ALTER TABLE `orderitems`
+  ADD CONSTRAINT `orderitems_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

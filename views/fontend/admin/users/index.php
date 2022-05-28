@@ -28,20 +28,22 @@
                     </thead>
                     <tbody>
                         <?php if (isset($users['data']) && count($users['data']) > 0) {
-                            foreach ($users['data'] as $key => $value) { ?>
-                                <tr>
-                                    <td><?= $key + 1 ?></td>
-                                    <td><?= $value['username'] ?></td>
-                                    <td><?= $value['email'] ?></td>
-                                    <td><?= $value['phone'] ?></td>
-                                    <td><?= $value['totalorders'] ?></td>
-                                    <td><?= $value['totalcost'] . "$" ?></td>
-                                    <td>
-                                        <a href="#modaledituser" data-toggle="modal" onclick="setIdUpdate(<?= $value['id'] ?>)" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                        <a onclick="setIdUserDelete(<?= $value['id'] ?>)" class="delete" title="Delete" href="#myModal" class="trigger-btn" data-toggle="modal" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                                    </td>
-                                </tr>
+                            foreach ($users['data'] as $key => $value) {
+                                if ($value['role'] !== 'admin') { ?>
+                                    <tr>
+                                        <td><?= $key + 1 ?></td>
+                                        <td><?= $value['username'] ?></td>
+                                        <td><?= $value['email'] ?></td>
+                                        <td><?= $value['phone'] ?></td>
+                                        <td><?= $value['totalorders'] ?></td>
+                                        <td><?= $value['totalcost'] . "$" ?></td>
+                                        <td>
+                                            <a href="#modaledituser" data-toggle="modal" onclick="setIdUpdate(<?= $value['id'] ?>)" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                            <a onclick="setIdUserDelete(<?= $value['id'] ?>)" class="delete" title="Delete" href="#myModal" class="trigger-btn" data-toggle="modal" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                        </td>
+                                    </tr>
                         <?php }
+                            }
                         } ?>
                     </tbody>
                 </table>
@@ -109,10 +111,11 @@
                 id,
             },
         }).then(res => {
-            if (res) {
-                localStorage.removeItem("itemDelete")
-                window.location.reload();
-            }
+            localStorage.removeItem("itemDelete")
+            window.location.reload();
+        }).catch(error => {
+            localStorage.removeItem("itemDelete")
+            window.location.reload();
         })
     }
     const handleCancelDelete = () => {
