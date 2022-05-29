@@ -27,12 +27,12 @@
 									<div class="item">
 										<div class="cake_feature_item">
 											<div class="cake_img" onclick="redirectProductDetails(<?= $product['id'] ?>)">
-												<img src=<?= $product['image'] ?> alt="">
+												<img src="<?= $product['image'] ?>" alt="">
 											</div>
 											<div class="cake_text">
 												<h4><?= "$" .  $product['price']  ?></h4>
 												<h3><?= $product['name'] ?></h3>
-												<p onclick="addToCart(<?= $product['id'] ?>)" class="pest_btn" >Add to cart</p>
+												<p onclick="addToCart(<?= $product['id'] ?>)" class="pest_btn">Add to cart</p>
 											</div>
 										</div>
 									</div>
@@ -42,7 +42,9 @@
 				<?php }
 				}
 			} else { ?>
-				<h1>Sản phẩm trống</h1>
+				<div style="height:50vh;display:flex;flex-direction: column;justify-content: center;">
+					<h1 >Sản phẩm trống</h1>
+				</div>
 			<?php } ?>
 		</div>
 	</section>

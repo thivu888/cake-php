@@ -63,8 +63,13 @@ const checkout = (user) => {
     return alert("Bạn phải đăng nhập trước");
   }
   const userId = user;
+  const address = $("#input-address").val();
+   if (!address) {
+     return alert("Vui lòng nhập địa chỉ");
+   }
   const data = {
     userId,
+    address,
     shipping: $("#order-shipping").val(),
     price:
       parseFloat(

@@ -57,6 +57,10 @@
                         <option class="text-muted" name="shipping" value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
                     <?php } ?>
                 </select>
+                <p>Địa chỉ</p>
+                <div class="input-group mb-3">
+                    <input id="input-address" name="address" type="text" class="form-control" placeholder="address" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                </div>
                 <p>Mã giảm giá</p>
                 <div class="input-group mb-3">
                     <input id="input-discount-code" name="code" type="text" class="form-control" placeholder="Enter your code" aria-label="Recipient's username" aria-describedby="basic-addon2">

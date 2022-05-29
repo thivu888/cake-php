@@ -21,7 +21,7 @@
             <?php if ($product['data'] && count($product['data']) > 0) { ?>
                 <div class="row product_d_price">
                     <div class="col-lg-6">
-                        <div class="product_img"><img class="img-fluid" src=<?= $product['data'][0]['image']  ?> alt=""></div>
+                        <div class="product_img"><img class="img-fluid" src="<?= $product['data'][0]['image']?>" alt=""></div>
                     </div>
                     <div class="col-lg-6">
                         <div class="product_details_text">
@@ -53,7 +53,7 @@
                         <div class="col-lg-3 col-md-4 col-6">
                             <div class="cake_feature_item">
                                 <div class="cake_img" onclick="redirectProductDetails(<?= $value['id'] ?>)">
-                                    <img src=<? $value['image']?>alt="">
+                                    <img src="<? $value['image']?>" alt="">
                                 </div>
                                 <div class="cake_text">
                                     <h4><?= "$" .  $value['price']  ?></h4>
